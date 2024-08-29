@@ -1,0 +1,6273 @@
+{
+	"name": "PL_CopyData_GAtoPhx",
+	"properties": {
+		"activities": [
+			{
+				"name": "Phx_D_COMPANY",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_DCompany",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlPoolSource",
+						"sqlReaderQuery": "select [opera_batch_cd], [opera_name_id_nr], [company_nm], cast([company_id] as int) as company_id, null as batch_id, SYSUTCDATETIME() as last_load_ts from [pms].[Phx_D_COMPANY]",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table [Curated1].[edw_D_Company_test]",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": false,
+							"keys": [
+								"company_id"
+							]
+						},
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "company_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "company_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "company_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "company_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "opera_batch_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "opera_batch_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "opera_name_id_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "opera_name_id_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_AzSQLPool",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "pms",
+							"Table": "Phx_D_COMPANY"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_D_Company_test"
+						}
+					}
+				]
+			},
+			{
+				"name": "Phx_D_GROUP",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_DGroup",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlPoolSource",
+						"sqlReaderQuery": "select opera_batch_cd, opera_name_id_nr, group_nm, cast(group_id as int) as group_id,null as batch_id, SYSUTCDATETIME() as last_load_ts from [pms].[Phx_D_GROUP]",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table [Curated1].[edw_D_Group_test1]",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": false,
+							"keys": [
+								"group_id"
+							]
+						},
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "group_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "group_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "group_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "group_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "opera_batch_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "opera_batch_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "opera_name_id_nr",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 12,
+									"precision": 38
+								},
+								"sink": {
+									"name": "opera_name_id_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_AzSQLPool",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "pms",
+							"Table": "Phx_D_GROUP"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_D_Group_test1"
+						}
+					}
+				]
+			},
+			{
+				"name": "Phx_D_MEMBERSHIP",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_DMembership",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlPoolSource",
+						"sqlReaderQuery": "select [membership_type_cd], [membership_type_nm], [opera_batch_cd], [src_membership_id], cast([membership_id] as int) as membership_id, null as batch_id, SYSUTCDATETIME() as last_load_ts from [pms].[Phx_D_MEMBERSHIP]",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table [Curated1].[edw_D_Membership_test]",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": false,
+							"keys": [
+								"membership_id"
+							]
+						},
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "membership_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "membership_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "membership_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "membership_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "membership_type_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "membership_type_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "opera_batch_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "opera_batch_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "src_membership_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "src_membership_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_AzSQLPool",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "pms",
+							"Table": "Phx_D_MEMBERSHIP"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_D_Membership_test"
+						}
+					}
+				]
+			},
+			{
+				"name": "Phx_D_RATE_CODE",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_DRateCode",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlPoolSource",
+						"sqlReaderQuery": "SELECT [rate_cd], [rate_code_nm], [YIELDABLE_IND], [negotiated_ind], [dynamic_ind], [multi_user_ind], [virtuoso_partner_ind], [preferred_partner_ind], [fine_hotel_ind], [internova_select_ind], [internova_worldwide_ind], [rate_code_group_id], [hotel_id], [market_id], [RowNum], cast([rate_code_id] as int) as rate_code_id, null as batch_id, SYSUTCDATETIME() as last_load_ts FROM [pms].[Phx_D_RATE_CODE]",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table [Curated1].[edw_D_Rate_Code_test]",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": false,
+							"keys": [
+								"rate_code_id"
+							]
+						},
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "rate_code_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "rate_code_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "rate_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "rate_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "rate_code_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "rate_code_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "market_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "market_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "hotel_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "hotel_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "dynamic_ind",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "dynamic_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "preferred_partner_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "preferred_partner_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "virtuoso_partner_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "virtuoso_partner_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "negotiated_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "negotiated_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "fine_hotel_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "fine_hotel_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "rate_code_group_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "rate_code_group_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "multi_user_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "multi_user_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							},
+							{
+								"source": {
+									"name": "YIELDABLE_IND",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "YIELDABLE_IND",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "internova_select_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "internova_select_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "internova_worldwide_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "internova_worldwide_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_AzSQLPool",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "pms",
+							"Table": "Phx_D_RATE_CODE"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_D_Rate_Code_test"
+						}
+					}
+				]
+			},
+			{
+				"name": "Phx_D_RESERVATION",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_DReservation",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlPoolSource",
+						"sqlReaderQuery": "SELECT [reservation_days_nr], [stay_days_nr], [payment_type_cd], [payment_type_nm], [guarantee_type_cd], [guarantee_type_nm], [walkin_ind], [day_use_ind], [repeat_guest_type_cd], [upsell_user_txt], [occupied_room_ind], [paid_room_ind], [lead_time_nr], [opera_resv_name_id], [hotel_id], cast([reservation_id] as int) as reservation_id, null as batch_id, SYSUTCDATETIME() as last_load_ts  FROM [pms].[Phx_D_RESERVATION]",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table [Curated1].[edw_D_Reservation_test]",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": false,
+							"keys": [
+								"reservation_id"
+							]
+						},
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "reservation_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "reservation_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "reservation_days_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "reservation_days_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "stay_days_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "stay_days_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "payment_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "payment_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "payment_type_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "payment_type_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "guarantee_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "guarantee_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "guarantee_type_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "guarantee_type_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "walkin_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "walkin_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "day_use_ind",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "day_use_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "repeat_guest_type_cd",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "repeat_guest_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "upsell_user_txt",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "upsell_user_txt",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "occupied_room_ind",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "occupied_room_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "paid_room_ind",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "paid_room_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "lead_time_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "lead_time_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "opera_resv_name_id",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 12,
+									"precision": 38
+								},
+								"sink": {
+									"name": "opera_resv_name_id",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 12,
+									"precision": 38
+								}
+							},
+							{
+								"source": {
+									"name": "hotel_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "hotel_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_AzSQLPool",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "pms",
+							"Table": "Phx_D_RESERVATION"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_D_Reservation_test"
+						}
+					}
+				]
+			},
+			{
+				"name": "Phx_D_ROOM_TYPE",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_DRoomType",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlPoolSource",
+						"sqlReaderQuery": "SELECT [room_type_cd], [room_type_nm], [suite_ind], [meeting_room_ind], [pseudo_room_ind], [src_room_category],[hotel_id], [room_product_id], [FOCUS_RPRTD_IND], cast([room_type_id] as int) as room_type_id, null as batch_id, SYSUTCDATETIME() as last_load_ts FROM [pms].[Phx_D_ROOM_TYPE]",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table [Curated1].[edw_D_Room_Type_test]",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": false,
+							"keys": [
+								"room_type_id"
+							]
+						},
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "room_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "room_type_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "room_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "room_type_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "room_type_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "room_type_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "suite_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "suite_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "meeting_room_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "meeting_room_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "pseudo_room_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "pseudo_room_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "room_product_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "room_product_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "hotel_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "hotel_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "src_room_category",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "src_room_category",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							},
+							{
+								"source": {
+									"name": "FOCUS_RPRTD_IND",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "FOCUS_RPRTD_IND",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_AzSQLPool",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "pms",
+							"Table": "Phx_D_ROOM_TYPE"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_D_Room_Type_test"
+						}
+					}
+				]
+			},
+			{
+				"name": "Phx_D_TRAVEL_AGENT",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_DTravelAgent",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlPoolSource",
+						"sqlReaderQuery": "SELECT [opera_batch_cd], [opera_name_id_nr], [travel_agent_iata_cd], [travel_agent_nm], [virtuoso_parther_ind], [preferred_partner_ind], cast([travel_agent_id] as int) as travel_agent_id, null as batch_id, SYSUTCDATETIME() as last_load_ts FROM [pms].[Phx_D_TRAVEL_AGENT]",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"preCopyScript": "truncate table [Curated1].[edw_D_Travel_Agent_test]",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": false,
+							"keys": [
+								"travel_agent_id"
+							]
+						},
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "travel_agent_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "travel_agent_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "travel_agent_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "travel_agent_nm",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "travel_agent_iata_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "travel_agent_iata_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "preferred_partner_ind",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "preferred_partner_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "virtuoso_parther_ind",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "virtuoso_parther_ind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "opera_batch_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "opera_batch_cd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "opera_name_id_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "opera_name_id_nr",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "batch_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "last_load_ts",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_AzSQLPool",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "pms",
+							"Table": "Phx_D_TRAVEL_AGENT"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_D_Travel_Agent_test"
+						}
+					}
+				]
+			},
+			{
+				"name": "Get_Watermark_FStayAdvisorBridge",
+				"description": "Get the max value of LAST_LOAD_TS from target table (Phoenix) ",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT MAX(LAST_LOAD_TS) AS WATERMARK FROM Curated1.edw_F_STAY_ADVISOR_BRIDGE_test",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_F_STAY_ADVISOR_BRIDGE_test"
+						}
+					}
+				}
+			},
+			{
+				"name": "Get_Watermark_FRoom",
+				"description": "Get the max value of LAST_LOAD_TS from target table (Phoenix) ",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT MAX(LAST_LOAD_TS) AS WATERMARK FROM Curated1.edw_F_ROOM_test",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_F_ROOM_test"
+						}
+					}
+				}
+			},
+			{
+				"name": "WaterMark_FRoom is null",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_FRoom",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Get_Watermark_FRoom').output.firstRow.WATERMARK, null)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "IncLoad_Phx_F_ROOM",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [hotel_id]\n      ,cast([room_type_id] as int) as room_type_id\n      ,[calendar_dt]\n      ,[rooms_avail_nr]\n      ,[out_of_order_rooms_nr]\n      ,[out_of_service_rooms_nr]\n      ,null as batch_id\n      ,sysdatetime() as LAST_LOAD_TD\n    FROM [pms].[Phx_F_ROOM]\n  where sysdatetime() > '@{activity('Get_Watermark_FRoom').output.firstRow.WATERMARK}'",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": false,
+										"keys": [
+											"HOTEL_ID",
+											"ROOM_TYPE_ID",
+											"CALENDAR_DT"
+										]
+									},
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "hotel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "HOTEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_type_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_TYPE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_avail_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ROOMS_AVAIL_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "out_of_order_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "OUT_OF_ORDER_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "out_of_service_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "OUT_OF_SERVICE_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "LAST_LOAD_TD",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "Phx_F_ROOM"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_ROOM_test"
+									}
+								}
+							]
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "FullLoad_Phx_F_ROOM",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [hotel_id]\n      ,cast([room_type_id] as int) as room_type_id\n      ,[calendar_dt]\n      ,[rooms_avail_nr]\n      ,[out_of_order_rooms_nr]\n      ,[out_of_service_rooms_nr]\n      ,null as batch_id\n      ,getdate() as LAST_LOAD_TD\n  FROM [pms].[Phx_F_ROOM]",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "hotel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "HOTEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_type_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_TYPE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_avail_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ROOMS_AVAIL_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "out_of_order_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "OUT_OF_ORDER_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "out_of_service_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "OUT_OF_SERVICE_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "LAST_LOAD_TD",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "Phx_F_ROOM"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_ROOM_test"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Watermark_FStayAdvisorBridge is null",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_FStayAdvisorBridge",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Get_Watermark_FStayAdvisorBridge').output.firstRow.WATERMARK, null)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "IncLoad_Phx_F_STAY_ADVISOR_BRIDGE",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [STAY_ADVISOR_RECORD_ID]\n      ,[RESORT]\n      ,[PMS_RESV_NAME_ID]\n      ,[CRS_RESV_NO]\n      ,[PMS_RESV_NO]\n      ,[GOLDEN_ID]\n      ,[FS_ADVISOR_ID]\n      ,[CANCEL_DATE]\n      ,[STATUS]\n      ,[BATCH_ID]\n      ,[Last_Load_TS]\n  FROM [pms].[phx_f_stay_advisor_bridge]\n  where Last_Load_TS > '@{activity('Get_Watermark_FStayAdvisorBridge').output.firstRow.WATERMARK}'",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": false,
+										"keys": [
+											"STAY_ADVISOR_RECORD_ID",
+											"RESORT",
+											"PMS_RESV_NAME_ID",
+											"GOLDEN_ID",
+											"FS_ADVISOR_ID"
+										]
+									},
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "STAY_ADVISOR_RECORD_ID",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "STAY_ADVISOR_RECORD_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "RESORT",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "RESORT",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "PMS_RESV_NAME_ID",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "PMS_RESV_NAME_ID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CRS_RESV_NO",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "CRS_RESV_NO",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "PMS_RESV_NO",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "PMS_RESV_NO",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "GOLDEN_ID",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "GOLDEN_ID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "FS_ADVISOR_ID",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "FS_ADVISOR_ID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CANCEL_DATE",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "CANCEL_DATE",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "STATUS",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "STATUS",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "Last_Load_TS",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "phx_f_stay_advisor_bridge"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_STAY_ADVISOR_BRIDGE_test"
+									}
+								}
+							]
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "FullLoad_Phx_F_STAY_ADVISOR_BRIDGE",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [STAY_ADVISOR_RECORD_ID]\n      ,[RESORT]\n      ,[PMS_RESV_NAME_ID]\n      ,[CRS_RESV_NO]\n      ,[PMS_RESV_NO]\n      ,[GOLDEN_ID]\n      ,[FS_ADVISOR_ID]\n      ,[CANCEL_DATE]\n      ,[STATUS]\n      ,[BATCH_ID]\n      ,[Last_Load_TS]\n  FROM [pms].[phx_f_stay_advisor_bridge]",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "STAY_ADVISOR_RECORD_ID",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "STAY_ADVISOR_RECORD_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "RESORT",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "RESORT",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "PMS_RESV_NAME_ID",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "PMS_RESV_NAME_ID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CRS_RESV_NO",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "CRS_RESV_NO",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "PMS_RESV_NO",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "PMS_RESV_NO",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "GOLDEN_ID",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "GOLDEN_ID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "FS_ADVISOR_ID",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "FS_ADVISOR_ID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CANCEL_DATE",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "CANCEL_DATE",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "STATUS",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "STATUS",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "Last_Load_TS",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "phx_f_stay_advisor_bridge"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_STAY_ADVISOR_BRIDGE_test"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Get_Watermark_FStay",
+				"description": "Get the max value of LAST_LOAD_TS from target table (Phoenix) ",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT MAX(LAST_LOAD_TS) AS WATERMARK FROM Curated1.edw_F_STAY_test",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_F_STAY_test"
+						}
+					}
+				}
+			},
+			{
+				"name": "Watermark_FStay is null",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_FStay",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Get_Watermark_FStay').output.firstRow.WATERMARK, null)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "IncLoad_Phx_F_STAY",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [hotel_id]\n      ,[stay_calendar_dt]\n      ,[stay_market_id]\n      ,[rate_code_id]\n      ,[channel_id]\n      ,[room_type_id]\n      ,[booked_room_type_id]\n      ,[travel_agent_id]\n      ,[company_id]\n      ,[group_id]\n      ,[reservation_id]\n      ,[reservation_calendar_dt]\n      ,[membership_id]\n      ,[country_id]\n      ,[state_id]\n      ,cast([arrival_ind] as nvarchar(1)) as arrival_ind\n      ,[currency_type_cd]\n      ,[rooms_sold_nr]\n      ,[room_revenue_amt]\n      ,[food_revenue_amt]\n      ,[other_revenue_amt]\n      ,[cancelled_rooms_nr]\n      ,[early_departure_rooms_nr]\n      ,[extended_stay_rooms_nr]\n      ,[no_show_rooms_nr]\n      ,[no_show_room_revenue_amt]\n      ,[single_occupancy_nr]\n      ,[double_occupancy_nr]\n      ,[upsell_revenue_amt]\n      ,[upsell_rooms_nr]\n      ,[adults_nr]\n      ,[child_nr]\n      ,[rooms_occ_nr]\n      ,[upgrade_rooms_nr]\n      ,[walk_in_nr]\n      ,[day_use_nr]\n      ,[departure_nr]\n      ,[same_day_cancel_nr]\n      ,[currency_cd]\n      ,[last_load_ts]\n      ,[downgrade_rooms_nr]\n      ,cast([deduct_ind] as nvarchar(1)) as deduct_ind\n      ,[drct_indrct_id]\n      ,NULL AS batch_id\n  FROM [pms].[Phx_F_STAY]\n  where last_load_ts > '@{activity('Get_Watermark_FStay').output.firstRow.WATERMARK}'",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": false,
+										"keys": [
+											"HOTEL_ID",
+											"STAY_MARKET_ID",
+											"RATE_CODE_ID",
+											"CHANNEL_ID",
+											"ROOM_TYPE_ID",
+											"BOOKED_ROOM_TYPE_ID",
+											"TRAVEL_AGENT_ID",
+											"COMPANY_ID",
+											"GROUP_ID",
+											"RESERVATION_ID",
+											"MEMBERSHIP_ID",
+											"COUNTRY_ID",
+											"STATE_ID",
+											"CURRENCY_TYPE_CD",
+											"DRCT_INDRCT_ID"
+										]
+									},
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "hotel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "HOTEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "stay_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "STAY_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "stay_market_id",
+												"type": "Int64",
+												"physicalType": "bigint"
+											},
+											"sink": {
+												"name": "STAY_MARKET_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "rate_code_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "RATE_CODE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "channel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CHANNEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_type_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_TYPE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "booked_room_type_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BOOKED_ROOM_TYPE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "travel_agent_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "TRAVEL_AGENT_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "company_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "COMPANY_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "group_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "GROUP_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "reservation_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "RESERVATION_ID",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "reservation_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "RESERVATION_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "membership_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "MEMBERSHIP_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "country_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "COUNTRY_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "state_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "STATE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "arrival_ind",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "ARRIVAL_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "currency_type_cd",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "CURRENCY_TYPE_CD",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_sold_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ROOMS_SOLD_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "ROOM_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "food_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "FOOD_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "other_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "OTHER_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "cancelled_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CANCELLED_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "early_departure_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "EARLY_DEPARTURE_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "extended_stay_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "EXTENDED_STAY_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "no_show_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "NO_SHOW_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "no_show_room_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "NO_SHOW_ROOM_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "single_occupancy_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "SINGLE_OCCUPANCY_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "double_occupancy_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "DOUBLE_OCCUPANCY_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "upsell_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "UPSELL_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "upsell_rooms_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "UPSELL_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "adults_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ADULTS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "child_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "CHILD_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_occ_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ROOMS_OCC_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "upgrade_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "UPGRADE_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "walk_in_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "WALK_IN_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "day_use_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "DAY_USE_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "departure_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "DEPARTURE_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "same_day_cancel_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "SAME_DAY_CANCEL_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "currency_cd",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "CURRENCY_CD",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "last_load_ts",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											}
+										},
+										{
+											"source": {
+												"name": "downgrade_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "DOWNGRADE_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "deduct_ind",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "DEDUCT_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "drct_indrct_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "DRCT_INDRCT_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "Phx_F_STAY"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_STAY_test"
+									}
+								}
+							]
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "FullLoad_Phx_F_STAY",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [hotel_id]\n      ,[stay_calendar_dt]\n      ,[stay_market_id]\n      ,[rate_code_id]\n      ,[channel_id]\n      ,[room_type_id]\n      ,[booked_room_type_id]\n      ,[travel_agent_id]\n      ,[company_id]\n      ,[group_id]\n      ,[reservation_id]\n      ,[reservation_calendar_dt]\n      ,[membership_id]\n      ,[country_id]\n      ,[state_id]\n      ,cast([arrival_ind] as nvarchar(1)) as arrival_ind\n      ,[currency_type_cd]\n      ,[rooms_sold_nr]\n      ,[room_revenue_amt]\n      ,[food_revenue_amt]\n      ,[other_revenue_amt]\n      ,[cancelled_rooms_nr]\n      ,[early_departure_rooms_nr]\n      ,[extended_stay_rooms_nr]\n      ,[no_show_rooms_nr]\n      ,[no_show_room_revenue_amt]\n      ,[single_occupancy_nr]\n      ,[double_occupancy_nr]\n      ,[upsell_revenue_amt]\n      ,[upsell_rooms_nr]\n      ,[adults_nr]\n      ,[child_nr]\n      ,[rooms_occ_nr]\n      ,[upgrade_rooms_nr]\n      ,[walk_in_nr]\n      ,[day_use_nr]\n      ,[departure_nr]\n      ,[same_day_cancel_nr]\n      ,[currency_cd]\n      ,[last_load_ts]\n      ,[downgrade_rooms_nr]\n      ,cast([deduct_ind] as nvarchar(1)) as deduct_ind\n      ,[drct_indrct_id]\n      ,NULL AS batch_id\n  FROM [pms].[Phx_F_STAY]",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "hotel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "HOTEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "stay_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "STAY_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "stay_market_id",
+												"type": "Int64",
+												"physicalType": "bigint"
+											},
+											"sink": {
+												"name": "STAY_MARKET_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "rate_code_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "RATE_CODE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "channel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CHANNEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_type_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_TYPE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "booked_room_type_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BOOKED_ROOM_TYPE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "travel_agent_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "TRAVEL_AGENT_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "company_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "COMPANY_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "group_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "GROUP_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "reservation_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "RESERVATION_ID",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "reservation_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "RESERVATION_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "membership_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "MEMBERSHIP_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "country_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "COUNTRY_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "state_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "STATE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "arrival_ind",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "ARRIVAL_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "currency_type_cd",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "CURRENCY_TYPE_CD",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_sold_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ROOMS_SOLD_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "ROOM_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "food_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "FOOD_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "other_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "OTHER_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "cancelled_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CANCELLED_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "early_departure_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "EARLY_DEPARTURE_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "extended_stay_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "EXTENDED_STAY_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "no_show_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "NO_SHOW_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "no_show_room_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "NO_SHOW_ROOM_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "single_occupancy_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "SINGLE_OCCUPANCY_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "double_occupancy_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "DOUBLE_OCCUPANCY_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "upsell_revenue_amt",
+												"type": "Single",
+												"physicalType": "float"
+											},
+											"sink": {
+												"name": "UPSELL_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "upsell_rooms_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "UPSELL_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "adults_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ADULTS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "child_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "CHILD_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_occ_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ROOMS_OCC_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "upgrade_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "UPGRADE_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "walk_in_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "WALK_IN_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "day_use_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "DAY_USE_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "departure_nr",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 12,
+												"precision": 38
+											},
+											"sink": {
+												"name": "DEPARTURE_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "same_day_cancel_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "SAME_DAY_CANCEL_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "currency_cd",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "CURRENCY_CD",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "last_load_ts",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											}
+										},
+										{
+											"source": {
+												"name": "downgrade_rooms_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "DOWNGRADE_ROOMS_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "deduct_ind",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "DEDUCT_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "drct_indrct_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "DRCT_INDRCT_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "Phx_F_STAY"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_STAY_test"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Get_Watermark_FPace",
+				"description": "Get the max value of LAST_LOAD_TS from target table (Phoenix) ",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT MAX(LAST_LOAD_TS) AS WATERMARK FROM Curated1.EDW_F_PACE_test",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_F_PACE_test"
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Watermark_FPace is null",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_FPace",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Get_Watermark_FPace').output.firstRow.WATERMARK, null)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "IncLoad_Phx_F_PACE",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [hotel_id]\n      ,[as_of_calendar_dt]\n      ,[stay_calendar_dt]\n      ,[channel_id]\n      ,cast([rate_code_id] as int) as rate_code_id\n      ,cast([company_id] as int) as company_id\n      ,[room_type_id]\n      ,cast([travel_agent_id] as int) as travel_agent_id\n      ,[resv_calendar_dt]\n      ,[arrival_ind]\n      ,[currency_type_cd]\n      ,[stay_market_id]\n      ,[currency_cd]\n      ,[len_of_stay_nr]\n      ,[room_revenue_net_amt]\n      ,[room_occ_net_nr]\n      ,[rooms_sold_nr]\n      ,[room_revenue_amt]\n      ,[rooms_occ_nr]\n      ,null as batch_id\n      ,getdate() as last_load_ts\n  FROM [pms].[Phx_F_PACE]\n  where getdate() > '@{activity('Get_Watermark_FPace').output.firstRow.WATERMARK}'",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": false,
+										"keys": [
+											"HOTEL_ID",
+											"AS_OF_CALENDAR_DT",
+											"STAY_CALENDAR_DT",
+											"RESV_CALENDAR_DT",
+											"CHANNEL_ID",
+											"STAY_MARKET_ID",
+											"RATE_CODE_ID",
+											"COMPANY_ID",
+											"ROOM_TYPE_ID",
+											"TRAVEL_AGENT_ID",
+											"LEN_OF_STAY_NR",
+											"ARRIVAL_IND",
+											"CURRENCY_TYPE_CD"
+										]
+									},
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "hotel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "HOTEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "as_of_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "AS_OF_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "stay_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "STAY_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "resv_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "RESV_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "stay_market_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "STAY_MARKET_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "rate_code_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "RATE_CODE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "channel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CHANNEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "company_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "COMPANY_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "travel_agent_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "TRAVEL_AGENT_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_type_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_TYPE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "arrival_ind",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "ARRIVAL_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "len_of_stay_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "LEN_OF_STAY_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "currency_type_cd",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "CURRENCY_TYPE_CD",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_sold_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOMS_SOLD_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_revenue_amt",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 0,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ROOM_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_occ_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOMS_OCC_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "currency_cd",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CURRENCY_CD",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "last_load_ts",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "room_revenue_net_amt",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_REVENUE_NET_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "room_occ_net_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_OCC_NET_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "Phx_F_PACE"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_PACE_test"
+									}
+								}
+							]
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "FullLoad_Phx_F_PACE",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [hotel_id]\n      ,[as_of_calendar_dt]\n      ,[stay_calendar_dt]\n      ,[channel_id]\n      ,cast([rate_code_id] as int) as rate_code_id\n      ,cast([company_id] as int) as company_id\n      ,[room_type_id]\n      ,cast([travel_agent_id] as int) as travel_agent_id\n      ,[resv_calendar_dt]\n      ,[arrival_ind]\n      ,[currency_type_cd]\n      ,[stay_market_id]\n      ,[currency_cd]\n      ,[len_of_stay_nr]\n      ,[room_revenue_net_amt]\n      ,[room_occ_net_nr]\n      ,[rooms_sold_nr]\n      ,[room_revenue_amt]\n      ,[rooms_occ_nr]\n      ,null as batch_id\n      ,getdate() as last_load_ts\n  FROM [pms].[Phx_F_PACE]",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "hotel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "HOTEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "as_of_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "AS_OF_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "stay_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "STAY_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "resv_calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "RESV_CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "stay_market_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "STAY_MARKET_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "rate_code_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "RATE_CODE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "channel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CHANNEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "company_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "COMPANY_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "travel_agent_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "TRAVEL_AGENT_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_type_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_TYPE_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "arrival_ind",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "ARRIVAL_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "len_of_stay_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "LEN_OF_STAY_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "currency_type_cd",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "CURRENCY_TYPE_CD",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_sold_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOMS_SOLD_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "room_revenue_amt",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 0,
+												"precision": 38
+											},
+											"sink": {
+												"name": "ROOM_REVENUE_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "rooms_occ_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOMS_OCC_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "currency_cd",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "CURRENCY_CD",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "last_load_ts",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "room_revenue_net_amt",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_REVENUE_NET_AMT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 19
+											}
+										},
+										{
+											"source": {
+												"name": "room_occ_net_nr",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "ROOM_OCC_NET_NR",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "Phx_F_PACE"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_PACE_test"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Get_Watermark_FHotelDaily",
+				"description": "Get the max value of LAST_LOAD_TS from target table (Phoenix) ",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT MAX(LAST_LOAD_TS) AS WATERMARK FROM Curated1.edw_F_HOTEL_DAILY_test",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLServer_PhxDevMigGen2",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "Curated1",
+							"Table": "edw_F_HOTEL_DAILY_test"
+						}
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Watermark_FHotelDaily is null",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Insert_AuditRecord_FHotelDaily",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Get_Watermark_FHotelDaily').output.firstRow.WATERMARK, null)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "IncLoad_Phx_F_HOTEL_DAILY",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [hotel_id]\n      ,[calendar_dt]\n      ,cast([potential_sell_out_ind] as nvarchar(1)) as potential_sell_out_ind\n      ,cast([sell_out_ind] as nvarchar(1)) as sell_out_ind\n      ,cast([shldr_dt_ind] as nvarchar(1)) as shldr_dt_ind\n      ,cast([occ_pct] as decimal(10,4)) as occ_pct\n      ,[LAST_LOAD_TD]\n      ,null as batch_id\n  FROM [pms].[Phx_F_HOTEL_DAILY]\n  where LAST_LOAD_TD > '@{activity('Get_Watermark_FHotelDaily').output.firstRow.WATERMARK}'",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": false,
+										"keys": [
+											"HOTEL_ID"
+										]
+									},
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "hotel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "HOTEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "potential_sell_out_ind",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "POTENTIAL_SELL_OUT_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sell_out_ind",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "SELL_OUT_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "shldr_dt_ind",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "SHLDR_DT_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "occ_pct",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 16,
+												"precision": 38
+											},
+											"sink": {
+												"name": "OCC_PCT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 10
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "LAST_LOAD_TD",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "Phx_F_HOTEL_DAILY"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_HOTEL_DAILY_test"
+									}
+								}
+							]
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "FullLoad_Phx_F_HOTEL_DAILY",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "SELECT [hotel_id]\n      ,[calendar_dt]\n      ,cast([potential_sell_out_ind] as nvarchar(1)) as potential_sell_out_ind\n      ,cast([sell_out_ind] as nvarchar(1)) as sell_out_ind\n      ,cast([shldr_dt_ind] as nvarchar(1)) as shldr_dt_ind\n      ,cast([occ_pct] as decimal(10,4)) as occ_pct\n      ,[LAST_LOAD_TD]\n      ,null as batch_id\n  FROM [pms].[Phx_F_HOTEL_DAILY]",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "hotel_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "HOTEL_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "calendar_dt",
+												"type": "DateTime",
+												"physicalType": "date"
+											},
+											"sink": {
+												"name": "CALENDAR_DT",
+												"type": "DateTime",
+												"physicalType": "date"
+											}
+										},
+										{
+											"source": {
+												"name": "potential_sell_out_ind",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "POTENTIAL_SELL_OUT_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sell_out_ind",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "SELL_OUT_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "shldr_dt_ind",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "SHLDR_DT_IND",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "occ_pct",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 6,
+												"precision": 38
+											},
+											"sink": {
+												"name": "OCC_PCT",
+												"type": "Decimal",
+												"physicalType": "decimal",
+												"scale": 4,
+												"precision": 10
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "Int32",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "BATCH_ID",
+												"type": "Int32",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
+												"name": "LAST_LOAD_TD",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "LAST_LOAD_TS",
+												"type": "DateTime",
+												"physicalType": "datetime2"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_AzSQLPool",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "pms",
+										"Table": "Phx_F_HOTEL_DAILY"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SQLServer_PhxDevMigGen2",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "Curated1",
+										"Table": "edw_F_HOTEL_DAILY_test"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_FHotelDaily",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Get_Watermark_FHotelDaily",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_F_HOTEL_DAILY",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_HOTEL_DAILY_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": {
+								"value": "@{activity('Get_Watermark_FHotelDaily').output.firstRow.WATERMARK}",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_FHotelDaily",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Watermark_FHotelDaily is null",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_F_HOTEL_DAILY",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@coalesce(activity('IncLoad_Phx_F_HOTEL_DAILY').output.executionDetails[0].status, activity('FullLoad_Phx_F_HOTEL_DAILY').output.executionDetails[0].status)\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_HOTEL_DAILY_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_FStayAdvisorBridge",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Get_Watermark_FStayAdvisorBridge",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_f_stay_advisor_bridge",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_STAY_ADVISOR_BRIDGE_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": {
+								"value": "@{activity('Get_Watermark_FStayAdvisorBridge').output.firstRow.WATERMARK}",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_FStayAdvisorBridge",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Watermark_FStayAdvisorBridge is null",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_f_stay_advisor_bridge",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@coalesce(activity('IncLoad_Phx_F_STAY_ADVISOR_BRIDGE').output.executionDetails[0].status, activity('FullLoad_Phx_F_STAY_ADVISOR_BRIDGE').output.executionDetails[0].status)\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_STAY_ADVISOR_BRIDGE_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_FRoom",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Get_Watermark_FRoom",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_F_ROOM",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_ROOM_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": {
+								"value": "@{activity('Get_Watermark_FRoom').output.firstRow.WATERMARK}",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_FRoom",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "WaterMark_FRoom is null",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_F_ROOM",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@coalesce(activity('IncLoad_Phx_F_ROOM').output.executionDetails[0].status, activity('FullLoad_Phx_F_ROOM').output.executionDetails[0].status)\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_ROOM_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_FStay",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Get_Watermark_FStay",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_F_STAY",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_STAY_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": {
+								"value": "@{activity('Get_Watermark_FStay').output.firstRow.WATERMARK}",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_FStay",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Watermark_FStay is null",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_F_STAY",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@coalesce(activity('IncLoad_Phx_F_STAY').output.executionDetails[0].status, activity('FullLoad_Phx_F_STAY').output.executionDetails[0].status)\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_STAY_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_FPace",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Get_Watermark_FPace",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_F_PACE",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_PACE_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": {
+								"value": "@{activity('Get_Watermark_FPace').output.firstRow.WATERMARK}",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_FPace",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Watermark_FPace is null",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_F_PACE",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@coalesce(activity('IncLoad_Phx_F_PACE').output.executionDetails[0].status, activity('FullLoad_Phx_F_PACE').output.executionDetails[0].status)\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_F_PACE_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_DCompany",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_COMPANY",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_COMPANY_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_DCompany",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Phx_D_COMPANY",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_COMPANY",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@{activity('Phx_D_COMPANY').output.executionDetails[0].status}\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_COMPANY_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_DGroup",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_GROUP",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_GROUP_test1",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_DMembership",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_MEMBERSHIP",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_MEMBERSHIP_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_DRateCode",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_RATE_CODE",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_RATE_CODE_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_DReservation",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_RESERVATION",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_RESERVATION_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_DRoomType",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_ROOM_TYPE",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_ROOM_TYPE_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Insert_AuditRecord_DTravelAgent",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[InsertAuditRecord_GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": null,
+							"type": "DateTime"
+						},
+						"EXECUTION_START": {
+							"value": "@utcnow()",
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_TRAVEL_AGENT",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PIPELINE_NAME": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": "In Progress",
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_TRAVEL_AGENT_test",
+							"type": "String"
+						},
+						"WATERMARK": {
+							"value": null,
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_DGroup",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Phx_D_GROUP",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_GROUP",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@{activity('Phx_D_GROUP').output.executionDetails[0].status}\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_GROUP_test1",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_DMembership",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Phx_D_MEMBERSHIP",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_MEMBERSHIP",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@{activity('Phx_D_MEMBERSHIP').output.executionDetails[0].status}\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_MEMBERSHIP_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_DRateCode",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Phx_D_RATE_CODE",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_RATE_CODE",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@{activity('Phx_D_RATE_CODE').output.executionDetails[0].status}\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_RATE_CODE_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_DReservation",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Phx_D_RESERVATION",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_RESERVATION",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@{activity('Phx_D_RESERVATION').output.executionDetails[0].status}\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_RESERVATION_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_DRoomType",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Phx_D_ROOM_TYPE",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_ROOM_TYPE",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@{activity('Phx_D_ROOM_TYPE').output.executionDetails[0].status}\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_ROOM_TYPE_test",
+							"type": "String"
+						}
+					}
+				}
+			},
+			{
+				"name": "Update_AuditRecord_DTravelAgent",
+				"type": "SqlPoolStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Phx_D_TRAVEL_AGENT",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "DevEBISQLPool",
+					"type": "SqlPoolReference"
+				},
+				"typeProperties": {
+					"storedProcedureName": "[EDW].[UpdateAuditRecord__GAtoPhxPipeline]",
+					"storedProcedureParameters": {
+						"EXECUTION_END": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"FROMSCHEMA": {
+							"value": "pms",
+							"type": "String"
+						},
+						"FROMTABLE": {
+							"value": "Phx_D_TRAVEL_AGENT",
+							"type": "String"
+						},
+						"ID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RUN_STATUS": {
+							"value": {
+								"value": "@{activity('Phx_D_TRAVEL_AGENT').output.executionDetails[0].status}\n",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TOSCHEMA": {
+							"value": "Curated1",
+							"type": "String"
+						},
+						"TOTABLE": {
+							"value": "edw_D_TRAVEL_AGENT_test",
+							"type": "String"
+						}
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
